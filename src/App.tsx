@@ -9,9 +9,8 @@ import {
   Title,
   Tooltip,
   Legend,
-  scales,
 } from 'chart.js';
-import { Bar, Line } from 'react-chartjs-2';
+import { Line } from 'react-chartjs-2';
 
 ChartJS.register(
   CategoryScale,
@@ -56,7 +55,6 @@ ChartJS.register(
 // };
 function App() {
   const [loading, setLoading] = useState(true);
-  const [datas, setDatas] = useState(true);
   const [dtList, setDtList] = useState<string[]>([]);
   const [tempList, setTempList] = useState<number[]>([]);
   // fetch("https://jk6k05y5fl.execute-api.ap-northeast-1.amazonaws.com/wip2/get-json")
