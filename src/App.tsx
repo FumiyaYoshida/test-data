@@ -9,9 +9,8 @@ import {
   Title,
   Tooltip,
   Legend,
-  scales,
 } from 'chart.js';
-import { Bar, Line } from 'react-chartjs-2';
+import { Line } from 'react-chartjs-2';
 
 ChartJS.register(
   CategoryScale,
@@ -56,9 +55,9 @@ ChartJS.register(
 // };
 function App() {
   const [loading, setLoading] = useState(true);
-  const [datas, setDatas] = useState(true);
   const [dtList, setDtList] = useState<string[]>([]);
   const [tempList, setTempList] = useState<number[]>([]);
+  const [humiList, setHumiList] = useState<number[]>([]);
   // fetch("https://jk6k05y5fl.execute-api.ap-northeast-1.amazonaws.com/wip2/get-json")
   //  .then((res) => res.json())
   //  .then((json) => console.log(json.body.datas))
@@ -75,7 +74,8 @@ function App() {
 
       console.log(datas)
       setDtList(datas.body.data.map((data: any) => data.datetime));
-      setTempList(datas.body.data.map((data: any) => data.value));
+      setTempList(datas.body.data.map((data: any) => data.temperature));
+      setHumiList(datas.body.data.map((data: any) => data.humidity));
     }
     fetchData();
     setLoading(false);
@@ -89,50 +89,36 @@ function App() {
       },
       title: {
         display: true,
-        text: 'Chart.js Line Chart',
+        text: 'Temprature',
       },
     },
     scales: {
-      x: {
-        ticks: {
-          // callback(val: number, index: number): string {
-          //   return index % 2 === 0 && typeof val === 'number' ? this.getLabelForValue(val) : '';
-          // },
-        }
-      },
-      // y: {
-      //   ticks: {
-      //     callback: function(value: number) {
-      //       if (value % 10 == 0) {
-      //         return value
-      //       } else {
-      //         return '';
-      //       }
-      //     }
-      //   }
-      // }
     }
   };
   
   const labels = dtList;
   // const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
   
- const data = {
+  const temp_data = {
     labels,
     datasets: [
       {
         label: 'Dataset 1',
         data: tempList,
-        // data: [600, 200, 900, 300, 100, 800, 700],
         borderColor: 'rgb(255, 99, 132)',
         backgroundColor: 'rgba(255, 99, 132, 0.5)',
-      },
-      // {
-      //   label: 'Dataset 2',
-      //   data: [300, 500, 400, 400, 910, 200, 800],
-      //   borderColor: 'rgb(53, 162, 235)',
-      //   backgroundColor: 'rgba(53, 162, 235, 0.5)',
-      // },
+      }
+    ],
+  };
+  const humi_data = {
+    labels,
+    datasets: [
+      {
+        label: 'Dataset 2',
+        data: humiList,
+        borderColor: 'rgb(53, 162, 235)',
+        backgroundColor: 'rgba(53, 162, 235, 0.5)',
+      }
     ],
   };
   
@@ -144,7 +130,8 @@ function App() {
           <h3 className="text-center text-xl">Loading</h3>
         ) : <>
           {/* <Bar options={options} data={data} /> */}
-          <Line options={options} data={data} />
+          <Line options={options} data={temp_data} />
+          <Line options={options} data={humi_data} />
         </>
       }
     </main>
